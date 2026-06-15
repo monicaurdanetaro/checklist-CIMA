@@ -635,7 +635,7 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle
         <tbody id="tbody-apv"></tbody></table></div>
       <div class="resumen"><div class="res-stat"><div class="res-n accent" id="c-apv">0</div><div class="res-lbl">Cumplidos</div></div><div class="res-div"></div><div class="res-stat"><div class="res-n" id="nc-apv">0</div><div class="res-lbl">No cumplidos</div></div><div class="res-div"></div><div class="res-stat"><div class="res-n" id="pct2-apv">—</div><div class="res-lbl">Cumplimiento</div></div><div class="res-div"></div><div class="cert-chip" id="chip-apv">Evaluación en curso</div></div>
       <div class="firmas"><div class="firma"><div class="firma-line"></div><div class="firma-lbl">Colaborador</div><div class="firma-sub">Confirma recepción del feedback</div></div><div class="firma"><div class="firma-line"></div><div class="firma-lbl">Tutor / Supervisor</div><div class="firma-sub">Responsable de la evaluación</div></div><div class="firma"><div class="firma-line"></div><div class="firma-lbl">Fecha de cierre</div></div></div>
-      <div class="footer"><strong>Metodología.</strong> El tutor observa al colaborador en situaciones reales de trabajo durante 5 días hábiles al cierre de la fase, sin intervenir ni corregir. En caso de No Certificar, se construye un plan de mejora y se re-evalúa en 2 a 4 semanas.</div>
+      <div class="footer" style="display:none"></div>
     </div>
 
     <!-- SUBGERENTE -->
@@ -652,7 +652,7 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle
         <tbody id="tbody-sub"></tbody></table></div>
       <div class="resumen"><div class="res-stat"><div class="res-n accent" id="c-sub">0</div><div class="res-lbl">Cumplidos</div></div><div class="res-div"></div><div class="res-stat"><div class="res-n" id="nc-sub">0</div><div class="res-lbl">No cumplidos</div></div><div class="res-div"></div><div class="res-stat"><div class="res-n" id="pct2-sub">—</div><div class="res-lbl">Cumplimiento</div></div><div class="res-div"></div><div class="cert-chip" id="chip-sub">Evaluación en curso</div></div>
       <div class="firmas"><div class="firma"><div class="firma-line"></div><div class="firma-lbl">Colaborador</div><div class="firma-sub">Confirma recepción del feedback</div></div><div class="firma"><div class="firma-line"></div><div class="firma-lbl">Gerente / Supervisor</div><div class="firma-sub">Responsable de la evaluación</div></div><div class="firma"><div class="firma-line"></div><div class="firma-lbl">Fecha de cierre</div></div></div>
-      <div class="footer"><strong>Metodología.</strong> El supervisor observa al colaborador en situaciones reales durante el período de evaluación, sin intervenir ni corregir. En caso de No Certificar, se construye un plan de mejora.</div>
+      <div class="footer" style="display:none"></div>
     </div>
 
     <!-- GERENTE -->
@@ -669,7 +669,7 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle
         <tbody id="tbody-ger"></tbody></table></div>
       <div class="resumen"><div class="res-stat"><div class="res-n accent" id="c-ger">0</div><div class="res-lbl">Cumplidos</div></div><div class="res-div"></div><div class="res-stat"><div class="res-n" id="nc-ger">0</div><div class="res-lbl">No cumplidos</div></div><div class="res-div"></div><div class="res-stat"><div class="res-n" id="pct2-ger">—</div><div class="res-lbl">Cumplimiento</div></div><div class="res-div"></div><div class="cert-chip" id="chip-ger">Evaluación en curso</div></div>
       <div class="firmas"><div class="firma"><div class="firma-line"></div><div class="firma-lbl">Colaborador</div><div class="firma-sub">Confirma recepción del feedback</div></div><div class="firma"><div class="firma-line"></div><div class="firma-lbl">Gerente de Área</div><div class="firma-sub">Responsable de la evaluación</div></div><div class="firma"><div class="firma-line"></div><div class="firma-lbl">Fecha de cierre</div></div></div>
-      <div class="footer"><strong>Metodología.</strong> El Gerente de Área observa al colaborador durante el período de evaluación, sin intervenir ni corregir. En caso de No Certificar, se construye un plan de mejora.</div>
+      <div class="footer" style="display:none"></div>
     </div>
 
   </div><!-- /wrap -->
@@ -694,7 +694,7 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle
 <div class="screen" id="screen-confirm">
   <div class="confirm-wrap">
     <div class="confirm-card">
-      <div class="confirm-icon">✅</div>
+      <div class="confirm-icon"><svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="32" cy="32" r="32" fill="#f0fdf4"/><path d="M18 33l10 10 18-18" stroke="#16a34a" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="confirm-title">Evaluación registrada</div>
       <div class="confirm-sub">La evaluación fue guardada exitosamente en el sistema.</div>
       <div class="confirm-detail" id="confirm-detail"></div>
@@ -713,7 +713,7 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle
         </div>
         <div style="font-size:11px;color:var(--sub);margin-bottom:12px">Se abrirá tu cliente de correo (Outlook, Gmail, etc.) con el mensaje ya redactado. Solo dale a Enviar.</div>
         <button class="confirm-btn" id="btn-send-email" onclick="sendEmails()" style="width:100%;margin-top:0;background:var(--blue)">
-          📧 Abrir correo
+          📧 Enviar por correo
         </button>
         <div id="email-status" style="font-size:11.5px;margin-top:8px;min-height:18px;text-align:center"></div>
       </div>
@@ -1109,10 +1109,8 @@ function confirmFinish() {
   const missing = [];
 
   for (let i = 0; i < total; i++) {
-    const sel  = document.getElementById(`sel-${role}-${i}`);
-    const date = document.getElementById(`date-${role}-${i}`);
-    if (!sel  || !sel.value)  missing.push(`Proceso ${i+1}: falta resultado (Cumple / No cumple)`);
-    if (!date || !date.value) missing.push(`Proceso ${i+1}: falta fecha de observación`);
+    const sel = document.getElementById(`sel-${role}-${i}`);
+    if (!sel || !sel.value) missing.push(`Proceso ${i+1}: falta resultado (Cumple / No cumple)`);
   }
 
   if (missing.length > 0) {
@@ -1182,48 +1180,47 @@ function updateSummary(role) {
 
 /* ── HELPERS ───────────────────────────────────────────────────────────────── */
 /* ── EMAIL & DOWNLOAD ───────────────────────────────────────────────────────── */
-function sendEmails() {
+async function sendEmails() {
   const recipients = [];
   if (document.getElementById('chk-colab').checked && state.emailColab) recipients.push(state.emailColab);
   if (document.getElementById('chk-tutor').checked && state.emailTutor) recipients.push(state.emailTutor);
   if (!recipients.length) { setEmailStatus('Selecciona al menos un destinatario.', 'err'); return; }
+
+  const btn = document.getElementById('btn-send-email');
+  btn.disabled = true; btn.textContent = 'Enviando…';
+  setEmailStatus('', '');
 
   const sels   = [...document.querySelectorAll('#tbody-' + state.role + ' .sel')];
   const cumple = sels.filter(s => s.value === 'cumple').length;
   const total  = ROLES[state.role].length;
   const pct    = Math.round((cumple / total) * 100);
   const fecha  = new Date().toLocaleDateString('es-VE');
-  const cert   = pct >= 90 ? 'CERTIFICA' : 'NO CERTIFICA';
 
-  let body = 'RESULTADO DE CERTIFICACION · PROGRAMA CIMA\n';
-  body += '--------------------------------------------------\n\n';
-  body += 'Colaborador: ' + state.nombre + '\n';
-  body += 'Cedula:      ' + state.cedula + '\n';
-  body += 'Tutor:       ' + state.tutor  + '\n';
-  body += 'Tienda:      ' + state.tienda + '\n';
-  body += 'Cargo:       ' + ROLE_LABELS[state.role] + '\n';
-  body += 'Fecha:       ' + fecha + '\n';
-  body += 'Cumplimiento: ' + cumple + ' / ' + total + ' procesos (' + pct + '%)\n';
-  body += 'Resultado:   ' + cert + '\n\n';
-  body += '--------------------------------------------------\n';
-  body += 'DETALLE POR PROCESO\n';
-  body += '--------------------------------------------------\n\n';
+  const payload = {
+    action: 'sendEmail', recipients,
+    nombre: state.nombre, cedula: state.cedula, tutor: state.tutor,
+    tienda: state.tienda, cargo: ROLE_LABELS[state.role],
+    cumple, total, pct, certifica: pct >= 90 ? 'Sí' : 'No',
+    fecha,
+    rows: sels.map((s, i) => ({
+      modulo:    ROLES[state.role][i][0],
+      proceso:   ROLES[state.role][i][1].slice(0, 90) + '…',
+      resultado: s.value
+    }))
+  };
 
-  sels.forEach((s, i) => {
-    const mod  = ROLES[state.role][i][0];
-    const proc = ROLES[state.role][i][1];
-    const res  = s.value === 'cumple' ? 'Cumple' : s.value === 'no-cumple' ? 'No cumple' : 'Sin evaluar';
-    body += '[' + mod + ']\n' + proc + '\nResultado: ' + res + '\n\n';
-  });
-
-  const subject = encodeURIComponent('Certificacion CIMA · ' + state.nombre + ' · ' + ROLE_LABELS[state.role]);
-  const bodyEnc = encodeURIComponent(body);
-  const to      = recipients.join(',');
-
-  window.location.href = 'mailto:' + to + '?subject=' + subject + '&body=' + bodyEnc;
-
-  setEmailStatus('Se abrio tu cliente de correo con el mensaje listo. Solo dale a Enviar.', 'ok');
-  document.getElementById('btn-send-email').textContent = 'Correo preparado';
+  try {
+    await fetch(SHEET_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+    setEmailStatus('✓ Correo enviado correctamente', 'ok');
+    btn.textContent = '✓ Enviado';
+  } catch(e) {
+    setEmailStatus('Error al enviar. Intenta de nuevo.', 'err');
+    btn.disabled = false; btn.textContent = '📧 Enviar por correo';
+  }
 }
 
 function setEmailStatus(msg, type) {
