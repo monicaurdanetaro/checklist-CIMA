@@ -78,7 +78,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--i
 .btn-navy{background:var(--navy);color:var(--white)}
 .btn-blue{background:var(--blue);color:var(--white)}
 .btn-save{background:#0f766e;color:var(--white)}
-.wrap{max-width:960px;margin:0 auto 56px;background:var(--white);border-radius:0 0 10px 10px;overflow:hidden;box-shadow:0 2px 16px rgba(0,40,88,.09)}
+.wrap{max-width:960px;margin:0 auto 0;background:var(--white);border-radius:0 0 0 0;overflow:hidden;box-shadow:0 2px 16px rgba(0,40,88,.09)}
 .page{display:none}.page.active{display:block}
 .hd{background:var(--navy);padding:22px 36px 18px;display:flex;align-items:center;justify-content:space-between;gap:20px}
 .hd-title{font-size:18px;font-weight:700;color:var(--white);line-height:1.25;margin-bottom:4px}
@@ -135,7 +135,7 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle
 .footer strong{color:var(--navy);font-weight:600}
 
 /* ── BOTTOM ACTION BAR ──────────────────────────────────── */
-.action-bar{max-width:960px;margin:0 auto 40px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;background:var(--white);border-radius:10px;box-shadow:0 2px 12px rgba(0,40,88,.08)}
+.action-bar{max-width:960px;margin:0 auto 40px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;background:var(--white);border-radius:0 0 10px 10px;box-shadow:0 2px 12px rgba(0,40,88,.08)}
 .action-bar-left{font-size:11.5px;color:var(--sub);line-height:1.5}
 .action-bar-left strong{color:var(--navy);display:block;margin-bottom:2px}
 .action-bar-right{display:flex;gap:10px}
@@ -733,7 +733,7 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle
 <div class="toast" id="toast"></div>
 
 <script>
-const SHEET_URL = 'https://script.google.com/a/macros/farmatodo.com/s/AKfycbyzGLd_4Gn2u-0qDHWBdClImf7aw9fpQRB4zoq98yMs19xzIHTfz0NO_SorAjazVxeY/exec';
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxu_e7yoxC0lvQj9Tdn-085c4QUHwN5YqsEf9lyp44L_Okc1SGELhwbmV8t7KmQ2DfT/exec';
 
 /* ── DATA ──────────────────────────────────────────────────────────────────── */
 const ROLES = {
@@ -1103,6 +1103,25 @@ async function saveProgress() {
 
 /* ── FINISH ─────────────────────────────────────────────────────────────────── */
 function confirmFinish() {
+  // Validate all resultado and fecha fields are filled for current role
+  const role = currentRole;
+  const total = ROLES[role].length;
+  const missing = [];
+
+  for (let i = 0; i < total; i++) {
+    const sel  = document.getElementById(`sel-${role}-${i}`);
+    const date = document.getElementById(`date-${role}-${i}`);
+    if (!sel  || !sel.value)  missing.push(`Proceso ${i+1}: falta resultado (Cumple / No cumple)`);
+    if (!date || !date.value) missing.push(`Proceso ${i+1}: falta fecha de observación`);
+  }
+
+  if (missing.length > 0) {
+    const primeros = missing.slice(0, 5).join('\n');
+    const resto    = missing.length > 5 ? `\n… y ${missing.length - 5} más.` : '';
+    alert(`No puedes finalizar todavía. Hay ${missing.length} campo(s) sin completar:\n\n${primeros}${resto}\n\nCompleta todos los resultados y fechas antes de enviar.`);
+    return;
+  }
+
   if (!confirm(`¿Finalizar y enviar la evaluación de ${state.nombre}?\nEsta acción borrará el borrador guardado.`)) return;
   finishEval();
 }
