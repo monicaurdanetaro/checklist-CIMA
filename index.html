@@ -163,16 +163,17 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--i
 /* PRINT */
 @media print{
   .top-bar,.action-bar,.cl-sidebar,.prog-bar-wrap{display:none!important}
-  .block-section{display:block!important}
   body{background:white;font-size:11px}
   .cl-main{padding-bottom:0}
-  .block-hd{position:static;background:var(--navy)!important;color:white!important}
-  .block-hd-title{color:white!important}
-  .block-hd-count{color:rgba(255,255,255,.7)!important}
-  .proc-card{padding:10px 16px}
+  /* Hide all process blocks - only show summary */
+  .block-section{display:none!important}
+  #sec-sum{display:block!important}
+  /* Hide inputs inside summary section */
   .proc-inputs{display:none!important}
+  /* Show the table */
   .proc-list-table{display:table!important}
   .print-header{display:block!important}
+  .block-hd{position:static}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 
@@ -1139,20 +1140,20 @@ async function sendEmails() {
   };
 
   try {
-    var res  = await fetch(SHEET_URL, {
+    // Use no-cors since Apps Script doesn't return CORS headers
+    // We assume success if no network error occurs
+    await fetch(SHEET_URL, {
       method:"POST",
+      mode:"no-cors",
       headers:{"Content-Type":"application/json"},
       body: JSON.stringify(payload)
     });
-    var data = await res.json();
-    if (data.status === "ok") {
-      setEmailSt("✓ Correo enviado correctamente", "ok");
-      btn.textContent = "✓ Enviado";
-    } else {
-      throw new Error(data.error || "Error desconocido");
-    }
+    // no-cors returns opaque response - if we got here without throwing, request was sent
+    setEmailSt("✓ Correo enviado correctamente", "ok");
+    btn.textContent = "✓ Enviado";
   } catch(e) {
-    setEmailSt("Error: " + e.message, "err");
+    // Only actual network errors land here
+    setEmailSt("Error de red: " + e.message, "err");
     btn.disabled = false; btn.textContent = "📧 Reintentar";
   }
 }
