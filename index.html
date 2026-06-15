@@ -711,9 +711,9 @@ td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle
             <span>Tutor/Supervisor: <strong id="lbl-email-tutor"></strong></span>
           </label>
         </div>
-        <div style="font-size:11px;color:var(--sub);margin-bottom:12px">El correo incluirá un resumen de los resultados de la evaluación.</div>
+        <div style="font-size:11px;color:var(--sub);margin-bottom:12px">Se abrirá tu cliente de correo (Outlook, Gmail, etc.) con el mensaje ya redactado. Solo dale a Enviar.</div>
         <button class="confirm-btn" id="btn-send-email" onclick="sendEmails()" style="width:100%;margin-top:0;background:var(--blue)">
-          📧 Enviar por correo
+          📧 Abrir correo
         </button>
         <div id="email-status" style="font-size:11.5px;margin-top:8px;min-height:18px;text-align:center"></div>
       </div>
@@ -1182,53 +1182,48 @@ function updateSummary(role) {
 
 /* ── HELPERS ───────────────────────────────────────────────────────────────── */
 /* ── EMAIL & DOWNLOAD ───────────────────────────────────────────────────────── */
-async function sendEmails() {
+function sendEmails() {
   const recipients = [];
   if (document.getElementById('chk-colab').checked && state.emailColab) recipients.push(state.emailColab);
   if (document.getElementById('chk-tutor').checked && state.emailTutor) recipients.push(state.emailTutor);
   if (!recipients.length) { setEmailStatus('Selecciona al menos un destinatario.', 'err'); return; }
 
-  const btn = document.getElementById('btn-send-email');
-  btn.disabled = true; btn.textContent = 'Enviando…';
-  setEmailStatus('', '');
+  const sels   = [...document.querySelectorAll('#tbody-' + state.role + ' .sel')];
+  const cumple = sels.filter(s => s.value === 'cumple').length;
+  const total  = ROLES[state.role].length;
+  const pct    = Math.round((cumple / total) * 100);
+  const fecha  = new Date().toLocaleDateString('es-VE');
+  const cert   = pct >= 90 ? 'CERTIFICA' : 'NO CERTIFICA';
 
-  const sels    = [...document.querySelectorAll('#tbody-' + state.role + ' .sel')];
-  const cumple  = sels.filter(s => s.value === 'cumple').length;
-  const total   = ROLES[state.role].length;
-  const pct     = Math.round((cumple / total) * 100);
+  let body = 'RESULTADO DE CERTIFICACION · PROGRAMA CIMA\n';
+  body += '--------------------------------------------------\n\n';
+  body += 'Colaborador: ' + state.nombre + '\n';
+  body += 'Cedula:      ' + state.cedula + '\n';
+  body += 'Tutor:       ' + state.tutor  + '\n';
+  body += 'Tienda:      ' + state.tienda + '\n';
+  body += 'Cargo:       ' + ROLE_LABELS[state.role] + '\n';
+  body += 'Fecha:       ' + fecha + '\n';
+  body += 'Cumplimiento: ' + cumple + ' / ' + total + ' procesos (' + pct + '%)\n';
+  body += 'Resultado:   ' + cert + '\n\n';
+  body += '--------------------------------------------------\n';
+  body += 'DETALLE POR PROCESO\n';
+  body += '--------------------------------------------------\n\n';
 
-  const payload = {
-    action:      'sendEmail',
-    recipients,
-    nombre:      state.nombre,
-    cedula:      state.cedula,
-    tutor:       state.tutor,
-    tienda:      state.tienda,
-    cargo:       ROLE_LABELS[state.role],
-    cumple,
-    total,
-    pct,
-    certifica:   pct >= 90 ? 'Sí' : 'No',
-    fecha:       new Date().toLocaleDateString('es-VE'),
-    rows:        sels.map((s, i) => ({
-      modulo:    ROLES[state.role][i][0],
-      proceso:   ROLES[state.role][i][1].slice(0, 80) + '…',
-      resultado: s.value
-    }))
-  };
+  sels.forEach((s, i) => {
+    const mod  = ROLES[state.role][i][0];
+    const proc = ROLES[state.role][i][1];
+    const res  = s.value === 'cumple' ? 'Cumple' : s.value === 'no-cumple' ? 'No cumple' : 'Sin evaluar';
+    body += '[' + mod + ']\n' + proc + '\nResultado: ' + res + '\n\n';
+  });
 
-  try {
-    await fetch(SHEET_URL, {
-      method: 'POST', mode: 'no-cors',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(payload)
-    });
-    setEmailStatus('✓ Correo enviado correctamente', 'ok');
-    btn.textContent = '✓ Enviado';
-  } catch(e) {
-    setEmailStatus('Error al enviar. Intenta de nuevo.', 'err');
-    btn.disabled = false; btn.textContent = '📧 Enviar por correo';
-  }
+  const subject = encodeURIComponent('Certificacion CIMA · ' + state.nombre + ' · ' + ROLE_LABELS[state.role]);
+  const bodyEnc = encodeURIComponent(body);
+  const to      = recipients.join(',');
+
+  window.location.href = 'mailto:' + to + '?subject=' + subject + '&body=' + bodyEnc;
+
+  setEmailStatus('Se abrio tu cliente de correo con el mensaje listo. Solo dale a Enviar.', 'ok');
+  document.getElementById('btn-send-email').textContent = 'Correo preparado';
 }
 
 function setEmailStatus(msg, type) {
