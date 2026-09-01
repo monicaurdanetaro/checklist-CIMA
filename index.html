@@ -1405,11 +1405,15 @@ async function finishEval() {
   var cumple = 0;
   for (var i = 0; i < total; i++) { var s = document.getElementById("sel-" + i); if (s && s.value === "cumple") cumple++; }
   var pct = Math.round((cumple / total) * 100);
+  var compDataForSend = getCompetenciasForRole(role);
+  var compDetail = (compDataForSend || []).map(function(c, ci) {
+    return { nombre: c.nombre, nivel: c.nivel, resultado: compResults[ci] || "" };
+  });
   try {
     await fetch(SHEET_URL, {
       method:"POST", mode:"no-cors",
       headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({ action:"finalize", cedula:ST.cedula, role:role, data:snap })
+      body: JSON.stringify({ action:"finalize", cedula:ST.cedula, role:role, data:snap, compDetail:compDetail })
     });
   } catch(e) {}
   document.getElementById("conf-detail").innerHTML =
