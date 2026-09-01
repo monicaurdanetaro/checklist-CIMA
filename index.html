@@ -94,7 +94,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--i
 .proc-card:nth-child(even){background:var(--row)}
 .proc-label{font-size:9.5px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--sub);margin-bottom:5px}
 .proc-text{font-size:13.5px;color:var(--ink);line-height:1.6;margin-bottom:12px}
-.proc-inputs{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.proc-inputs{display:grid;grid-template-columns:1fr auto;gap:9px;align-items:start}
 .proc-sel{width:100%;font-family:inherit;font-size:13px;color:var(--sub);border:1.5px solid var(--border);border-radius:7px;padding:9px 28px 9px 10px;appearance:none;background:var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='5'%3E%3Cpath d='M0 0l4.5 5L9 0z' fill='%2394a3b8'/%3E%3C/svg%3E") no-repeat right 9px center;outline:none;cursor:pointer;transition:all .15s}
 .proc-sel.cumple{color:var(--navy);border-color:#93c5fd;background-color:#eff6ff}
 .proc-sel.no-cumple{color:var(--red);border-color:#fca5a5;background-color:#fff5f5}
@@ -114,8 +114,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--i
 .comp-btn.consolidado{background:#f0fdf4;border-color:#86efac;color:#16a34a;font-weight:700}
 .comp-btn.no-consolidado{background:#fff5f5;border-color:#fca5a5;color:var(--red);font-weight:700}
 
-.proc-date{width:100%;font-family:inherit;font-size:13px;border:1.5px solid var(--border);border-radius:7px;padding:9px 10px;outline:none;color:var(--ink)}
-.proc-date:focus{border-color:var(--blue)}
+.proc-date-label{font-size:12px;color:var(--sub);font-style:italic;padding:9px 4px;display:flex;align-items:center;gap:5px}
+.proc-date-label span{font-weight:600;color:var(--ink);font-style:normal}
 .proc-obs{width:100%;font-family:inherit;font-size:13px;border:1.5px solid var(--border);border-radius:7px;padding:9px 10px;resize:vertical;min-height:38px;outline:none;color:var(--ink);grid-column:1/-1}
 .proc-obs::placeholder{color:#c0cdd8}
 .proc-obs:focus{border-color:var(--blue)}
@@ -935,7 +935,7 @@ function buildChecklist(draft) {
         "<div class=\"proc-text\">" + item.comp + "</div>" +
         "<div class=\"proc-inputs\">" +
           "<select class=\"proc-sel\" id=\"sel-" + item.i + "\" onchange=\"onSel(this)\"><option value=\"\">Resultado…</option><option value=\"cumple\">✓ Cumple</option><option value=\"parcial\">◐ Cumple parcialmente</option><option value=\"no-cumple\">✗ No cumple</option></select>" +
-          "<input type=\"date\" class=\"proc-date\" id=\"date-" + item.i + "\" onchange=\"triggerAutoSave()\">" +
+          "<div class=\"proc-date-label\" id=\"datelbl-" + item.i + "\">📅 <span id=\"datespan-" + item.i + "\">—</span></div>" + "<input type=\"hidden\" id=\"date-" + item.i + "\">" +
           "<textarea class=\"proc-obs\" id=\"obs-" + item.i + "\" placeholder=\"Observaciones (opcional)…\" oninput=\"triggerAutoSave()\"></textarea>" +
         "</div>";
       sec.appendChild(card);
@@ -996,7 +996,14 @@ function buildChecklist(draft) {
       var date = document.getElementById("date-" + i);
       var obs  = document.getElementById("obs-"  + i);
       if (sel  && row.resultado) { sel.value = row.resultado;  applySelStyle(sel); }
-      if (date && row.fecha)     { date.value = row.fecha; }
+      if (date && row.fecha) {
+        date.value = row.fecha;
+        var sp = document.getElementById("datespan-" + i);
+        if (sp && row.fecha) {
+          var p = row.fecha.split("-");
+          if (p.length===3) sp.textContent = p[2]+"/"+p[1]+"/"+p[0];
+        }
+      }
       if (obs  && row.obs)       { obs.value  = row.obs; }
     });
     /* Restore comp results */
@@ -1014,7 +1021,26 @@ function buildChecklist(draft) {
   showScreen("s-checklist");
 }
 
-function onSel(sel) { applySelStyle(sel); updateProgress(); triggerAutoSave(); }
+function onSel(sel) {
+  applySelStyle(sel);
+  /* Auto-fill date when a result is selected */
+  var i = sel.id.replace("sel-","");
+  var hiddenDate = document.getElementById("date-" + i);
+  var spanDate   = document.getElementById("datespan-" + i);
+  if (sel.value && hiddenDate && !hiddenDate.value) {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2,"0");
+    var mm = String(today.getMonth()+1).padStart(2,"0");
+    var yyyy = today.getFullYear();
+    hiddenDate.value = yyyy + "-" + mm + "-" + dd;
+    if (spanDate) spanDate.textContent = dd + "/" + mm + "/" + yyyy;
+  } else if (hiddenDate && hiddenDate.value && spanDate) {
+    var parts = hiddenDate.value.split("-");
+    if (parts.length===3) spanDate.textContent = parts[2]+"/"+parts[1]+"/"+parts[0];
+  }
+  updateProgress();
+  triggerAutoSave();
+}
 
 /* COMPETENCIAS */
 var compResults = {};  /* { 0: 'consolidado', 1: 'no-consolidado', ... } */
