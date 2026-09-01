@@ -99,6 +99,21 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--i
 .proc-sel.cumple{color:var(--navy);border-color:#93c5fd;background-color:#eff6ff}
 .proc-sel.no-cumple{color:var(--red);border-color:#fca5a5;background-color:#fff5f5}
 .proc-sel.parcial{color:#b45309;border-color:#fcd34d;background-color:#fffbeb}
+
+/* Competencias block */
+.comp-section-title{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--sub);padding:20px 20px 10px}
+.comp-card{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:18px 20px;margin:0 16px 14px}
+.comp-card-name{font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.comp-card-nivel{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;background:#dbeafe;color:#1e40af;padding:2px 8px;border-radius:20px;margin-bottom:8px}
+.comp-card-def{font-size:12.5px;color:var(--sub);margin-bottom:10px;line-height:1.5}
+.comp-nivel-titulo{font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.comp-comportamiento{font-size:12.5px;color:var(--ink);padding:5px 0 5px 14px;border-left:2px solid #e2e8f0;margin-bottom:4px;line-height:1.5;position:relative}
+.comp-comportamiento::before{content:'•';position:absolute;left:4px;color:var(--blue)}
+.comp-resultado-row{display:flex;gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+.comp-btn{flex:1;font-family:inherit;font-size:12.5px;font-weight:600;padding:9px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--white);color:var(--sub);cursor:pointer;transition:all .15s;text-align:center}
+.comp-btn.consolidado{background:#f0fdf4;border-color:#86efac;color:#16a34a;font-weight:700}
+.comp-btn.no-consolidado{background:#fff5f5;border-color:#fca5a5;color:var(--red);font-weight:700}
+
 .proc-date{width:100%;font-family:inherit;font-size:13px;border:1.5px solid var(--border);border-radius:7px;padding:9px 10px;outline:none;color:var(--ink)}
 .proc-date:focus{border-color:var(--blue)}
 .proc-obs{width:100%;font-family:inherit;font-size:13px;border:1.5px solid var(--border);border-radius:7px;padding:9px 10px;resize:vertical;min-height:38px;outline:none;color:var(--ink);grid-column:1/-1}
@@ -730,6 +745,26 @@ const ROLES = {
   ["Aspectos legales", "Gestiona la relación con otros departamentos de soporte: coordina con Mantenimiento las solicitudes de reparaciones, con TI los incidentes de sistemas y equipos, y con el equipo Comercial el cumplimiento de la programación y cambios de layout."]
 ]
 };
+
+const COMPETENCIAS_DB = {"Capacidad de Integración": {"def": "Trabaja de manera colaborativa/interdependiente en la Organización y crea sinergia con las otras áreas, canales y/o países donde opera Farmatodo.", "niveles": {"1": {"titulo": "Comprende las funciones/responsabilidades de las distintas áreas y canales", "comportamientos": ["Conoce la estructura formal de las principales áreas de Farmatodo, su razón de ser, prioridades y principales funciones.", "Entiende la cadena de valor de Farmatodo y cómo las unidades se impactan entre sí en función del objetivo final."]}, "2": {"titulo": "Planifica las actividades tomando en consideración el resto de la Organización", "comportamientos": ["Al momento de establecer prioridades y definir acciones, contempla no sólo la información de su área sino que integra su conocimiento sobre las otras unidades de la cadena de valor y los involucra para asegurar alineación y sinergia."]}, "3": {"titulo": "Ejecuta su trabajo de forma integrada e interdependiente con las distintas áreas", "comportamientos": ["Interactúa con otras áreas para alcanzar los objetivos, compartiendo y analizando indicadores en conjunto e intercambiando información crítica para asegurar el resultado global.", "Comparte recursos necesarios con otras áreas/canales para alcanzar los resultados esperados.", "Participa activamente en reuniones multidisciplinarias con otras áreas para la generación de ideas y resolución de problemas."]}, "4": {"titulo": "Genera aprendizajes y sinergia", "comportamientos": ["En su área de experticia es un facilitador para otros, comparte información, asesora y se involucra hasta resolver las situaciones buscando promover aprendizajes.", "Ante un error cometido, se asegura que las áreas involucradas internalicen el impacto y consecuencias, y define acciones conjuntas para minimizarlos.", "Basado en la comprensión de la cultura Farmatodo, ajusta su propia conducta para establecer relaciones de 'sociedad' con las distintas áreas."]}, "5": {"titulo": "Modela y promueve una cultura de trabajo colaborativa y transversal", "comportamientos": ["Cuando hay problemas entre áreas o canales, tiende puentes y restablece los canales de comunicación, favoreciendo los aprendizajes.", "Actúa para desarrollar objetivos comunes entre las áreas, canales y países con miras a asegurar los resultados de Farmatodo."]}}}, "Conciencia de Equipo": {"def": "Disposición a trabajar en colaboración con otros, formar parte de un equipo y trabajar juntos hacia el logro de un objetivo en común.", "niveles": {"1": {"titulo": "Coopera con el equipo", "comportamientos": ["Participa activamente y con gusto en el equipo de trabajo.", "Le da importancia a los objetivos del equipo y responde positivamente a las solicitudes de ayuda.", "Mantiene a los demás miembros informados sobre asuntos de interés mutuo."]}, "2": {"titulo": "Anima al equipo", "comportamientos": ["Motiva a los otros miembros de su equipo haciéndoles sentir importantes.", "Actúa en función del beneficio del equipo.", "Permanece con su equipo en situaciones difíciles."]}, "3": {"titulo": "Crea espíritu de equipo", "comportamientos": ["Actúa para desarrollar un clima de trabajo en equipo y de cooperación.", "Defiende la reputación y la identidad del equipo frente a terceros."]}, "4": {"titulo": "Valora al equipo y ofrece su experiencia", "comportamientos": ["Ofrece ayuda a los compañeros en áreas donde posee experiencia.", "Intercambia ideas e información regularmente con otras personas de su equipo.", "Mantiene una actitud abierta a aprender de los otros miembros de su equipo."]}}}, "Conocimiento Técnico": {"def": "Capacidad de mantenerse actualizado y poner en práctica sus conocimientos técnicos con el fin de asesorar al cliente o implementar soluciones.", "niveles": {"1": {"titulo": "Se mantiene actualizado en su campo de conocimiento", "comportamientos": ["Muestra inquietud y curiosidad por conocer más y estar al día en novedades del sector farmacéutico, retail y tecnológico.", "Se ocupa por ubicar la información sobre los cambios de requerimientos legales/nuevas tecnologías."]}, "2": {"titulo": "Utiliza sus conocimientos", "comportamientos": ["Utiliza distintas herramientas para conocer sobre nuevas opciones de productos, presentaciones y soluciones tecnológicas.", "Aplica sus conocimientos para brindar al cliente asesoría farmacéutica/soluciones tecnológicas de alto nivel.", "Responde como un experto a las preguntas que le hacen sus clientes sobre productos y/o temas farmacéuticos."]}, "3": {"titulo": "Brinda apoyo técnico a su equipo", "comportamientos": ["Comparte con los demás miembros del equipo su experiencia y conocimiento para que tengan la capacidad de brindar la asesoría esperada.", "Es reconocido por otros como un experto en su campo."]}, "4": {"titulo": "Da sugerencias con foco en resultados", "comportamientos": ["Da sugerencias fundamentadas en su amplio conocimiento técnico y del negocio, con miras a lograr mejores resultados."]}}}, "Desarrollo de Otros": {"def": "Interés y disposición genuina por promover la formación y el desarrollo propio y del personal a su cargo, aún cuando no sean sus reportes directos.", "niveles": {"1": {"titulo": "Se adueña de su desarrollo personal 'en el día a día'", "comportamientos": ["Pregunta, pide retroalimentación y busca apoyo en compañeros o supervisores para continuar creciendo en habilidades y conocimientos.", "Identifica las características personales o aspectos del entorno que obstaculizan su desempeño y trabaja para mejorarlos."]}, "2": {"titulo": "Da instrucciones y apoya al desarrollo de otros", "comportamientos": ["Dedica tiempo para dar instrucciones detalladas sobre procesos y tareas, asegurándose que las mismas hayan quedado claras.", "Brinda apoyo práctico para ayudar a otros en su aprendizaje (simulaciones, consejo experto, información, recursos, tiempo)."]}, "3": {"titulo": "Anima a desarrollarse y retroalimenta", "comportamientos": ["Motiva a sus colaboradores para asumir nuevas responsabilidades o participar en eventos especiales como oportunidad de exponerse a nuevas situaciones.", "Indaga con los colaboradores sobre sus necesidades de formación y desarrollo en función de sus fortalezas y áreas de oportunidad.", "Invierte tiempo para brindar retroalimentación sobre el desempeño de una manera constructiva 'uno a uno'."]}, "4": {"titulo": "Fomenta el aprendizaje y la formación a largo plazo", "comportamientos": ["Busca generar capacidad en las personas promoviendo la resolución de los problemas por sí mismos, en vez de darles directamente la respuesta.", "A partir de las necesidades de desarrollo identificadas, actúa en conjunto con las áreas responsables para actualizar o establecer nuevos procesos de desarrollo.", "Monitorea el progreso del desarrollo de los colaboradores y se asegura que asistan a los adiestramientos sugeridos."]}, "5": {"titulo": "Genera capacidad organizacional", "comportamientos": ["Promueve transferencias, intercambio de personas entre áreas y/o países, asignación a proyectos con fines de desarrollo.", "Crea un clima organizacional que propicia el aprendizaje y las experiencias.", "Identifica el potencial y se asegura de desarrollar las capacidades de las personas que pueden relevarlo de su cargo."]}}}, "Dirección de Otros": {"def": "Habilidad para orientar eficazmente el desempeño de su equipo o de otras personas. Implica fijar estándares, hacer seguimiento y dar retroalimentación.", "niveles": {"1": {"titulo": "Explica detalladamente las expectativas de desempeño", "comportamientos": ["Establece y comunica a otras personas las expectativas de desempeño y verifica que esté claro lo que se espera de ellos.", "Se asegura que las personas comprendan los parámetros establecidos para sus acciones y les hace saber el impacto del no cumplimiento."]}, "2": {"titulo": "Da retroalimentación oportuna", "comportamientos": ["Dedica tiempo para brindar retroalimentación balanceada sobre las conductas/desempeño de las personas.", "Hace seguimiento al desempeño individual y/o del equipo, comparándolo con los objetivos establecidos."]}, "3": {"titulo": "Responsabiliza a la gente por su desempeño", "comportamientos": ["Hace cumplir las normas establecidas confrontando de manera asertiva los problemas de desempeño.", "Vincula la conducta de los colaboradores con los indicadores obtenidos por la Organización/área y actúa para que asuman la responsabilidad de los resultados.", "Toma decisiones concretas ante problemas de desempeño recurrentes (sanciones formales, movimientos internos, desincorporaciones)."]}, "4": {"titulo": "Promueve una cultura orientada al desempeño superior", "comportamientos": ["Establece sistemáticamente estándares nuevos y retadores generando mecanismos de apoyo para alcanzarlos.", "Eleva constantemente los niveles de desempeño del equipo."]}}}, "Energía": {"def": "Capacidad de mantener un nivel de actividad alto y constante, adaptado al ritmo del día a día organizacional, logrando impactar positivamente en otras personas.", "niveles": {"1": {"titulo": "Resiste con energía", "comportamientos": ["Se interesa por trabajos que implican alto grado de actividad física y mental.", "Está dispuesto a trabajar tiempo extra si la situación lo amerita."]}, "2": {"titulo": "Mantiene el ritmo de trabajo", "comportamientos": ["Mantiene un ritmo constante de trabajo sin que la presión del día a día afecte su efectividad.", "Mantiene su ritmo de trabajo aún cuando le sean asignadas responsabilidades adicionales.", "Pasa de una actividad a otra con rapidez y coherencia, sobreponiéndose rápidamente a contratiempos."]}, "3": {"titulo": "Refleja entusiasmo", "comportamientos": ["Demuestra en su comportamiento altos niveles de energía, exalta entusiasmo y pasión por lo que hace.", "Mantiene su nivel de energía y actividad en diferentes situaciones y con interlocutores diversos."]}, "4": {"titulo": "Dirige la energía", "comportamientos": ["Mantiene el nivel de actividad y atención frente a cambios súbitos o presencia de obstáculos.", "Promueve entusiasmo, acción y pasión por el trabajo a los otros miembros de su equipo.", "Transmite fuerza e ímpetu en todas sus acciones."]}}}, "Excelencia Operativa": {"def": "Interés por optimizar permanentemente los procesos de la Organización a fin de alcanzar mejores resultados en eficiencia y productividad.", "niveles": {"1": {"titulo": "Relaciona las responsabilidades de su trabajo con el proceso y las mejores prácticas organizacionales", "comportamientos": ["Cuando hace su trabajo, se pregunta si esa es la mejor manera de realizarlo, si hay retrabajo o procedimientos innecesarios.", "Se documenta sobre la mejor forma de hacer su trabajo en Farmatodo, indagando sobre experiencias pasadas positivas."]}, "2": {"titulo": "Cuestiona el desempeño actual", "comportamientos": ["Muestra preocupación permanente por los costos y la eficiencia, eliminando el retrabajo, los procedimientos innecesarios y la utilización irracional de recursos.", "Cuestiona de manera positiva los procesos y procedimientos de su área, su razón de ser, su valor agregado y el impacto en las distintas áreas."]}, "3": {"titulo": "Identifica áreas de mejora y/o cambios", "comportamientos": ["Identifica y analiza cuidadosamente los distintos procesos, visualizando cambios específicos que se deben realizar.", "Hace análisis costo-beneficio para introducir mejoras a los procesos.", "Evalúa y determina las implicaciones que en otras áreas generaría la mejora de procesos de su área."]}, "4": {"titulo": "Mejora continuamente los procesos a su cargo", "comportamientos": ["Implementa mejoras, diseñando planes de acción con objetivos específicos de mejora, indicadores de avance, medibles y observables.", "Propicia espacios con los equipos para la generación de ideas a fin de promover el mejoramiento continuo."]}, "5": {"titulo": "Promueve el mejoramiento continuo en la Organización", "comportamientos": ["Evalúa y documenta continuamente los resultados de las mejoras implementadas en la gestión de la Organización/área.", "Es un referente que involucra y estimula a las personas para que propongan ideas de mejora sobre los procesos/actividades.", "Introduce mejoras tomando como referencia buenas prácticas del mercado global."]}}}, "Influencia y Negociación": {"def": "Capacidad de influir y persuadir a otros para lograr que apoyen sus ideas, planes y proyectos con foco en maximizar los resultados del área y de Farmatodo.", "niveles": {"1": {"titulo": "Toma una acción directa para persuadir", "comportamientos": ["Utiliza elementos de persuasión directa, apoyándose en argumentos, información recabada o datos en una interacción o presentación.", "Se interesa en posicionar la imagen de la Organización o su propia imagen al interactuar con otros."]}, "2": {"titulo": "Toma varias acciones para persuadir", "comportamientos": ["Identifica y se preocupa por conocer a sus interlocutores, generando una red de contactos que podría serle útil.", "Prepara cuidadosamente los argumentos de persuasión e incluye diferentes elementos para presentarlos."]}, "3": {"titulo": "Calcula el impacto de sus acciones y/o palabras", "comportamientos": ["Prepara con anticipación diferentes argumentos adaptando su lenguaje y herramientas de influencia al interlocutor (intereses, presiones, objetivos, contexto).", "Se ocupa por conocer lo suficiente a sus posibles interlocutores para definir la estrategia de influencia que pudiera aplicar en cada caso."]}, "4": {"titulo": "Influye de manera indirecta", "comportamientos": ["Utiliza terceras personas o expertos con reconocimiento y credibilidad para que apoyen sus ideas y planes como forma de influir sobre otros.", "Frente a situaciones críticas, activa su red de contactos y se comunica directamente con las personas clave que pueden influir en otros."]}, "5": {"titulo": "Es justo y genera acuerdos beneficiosos", "comportamientos": ["Actúa e influye con la premisa de llegar a un buen acuerdo y mantener relaciones de confianza y de largo plazo.", "Ante una situación de negociación, actúa para ser percibido como justo y se mantiene enfocado en los objetivos."]}, "6": {"titulo": "Establece coaliciones anticipadamente", "comportamientos": ["Utiliza conocimiento profundo de la Organización interna y/o de proveedores/entes gubernamentales para buscar con anticipación personas o grupos que 'compren' sus ideas y apalanquen su aprobación."]}}}, "Liderazgo": {"def": "Capacidad de inspirar a otros a alcanzar altos estándares de desempeño creando un clima de energía y compromiso, comunicando la visión y cultura de la empresa.", "niveles": {"1": {"titulo": "Asume un rol de liderazgo, aunque no sea su rol formal", "comportamientos": ["Asume el rol de líder dentro de un equipo (aún cuando no posea un rol formal) para guiarlos en torno a un problema o tema en discusión.", "Se asegura que el grupo disponga de la información necesaria para llevar a cabo su trabajo con efectividad."]}, "2": {"titulo": "Promueve la efectividad del equipo", "comportamientos": ["Asegura las condiciones óptimas para que el equipo pueda alcanzar sus resultados (recursos, equipos de seguridad, entrenamientos).", "Está atento a los elementos del clima organizacional, los gestiona y aborda para solucionarlos."]}, "3": {"titulo": "Genera confianza y cercanía con la gente", "comportamientos": ["Toma acciones concretas para acercarse a su personal y abre espacios de interacción para escuchar sus inquietudes y feedback.", "Es justo en el trato con las personas a su cargo, aplicando las normativas de manera equitativa.", "Se involucra personalmente en las situaciones difíciles, ayudando hombro a hombro a otros en trabajos de alto volumen o exigencia."]}, "4": {"titulo": "Es un modelo a seguir", "comportamientos": ["Es coherente entre lo que exige y hace, pone personalmente en práctica las conductas/normas que exige a su equipo.", "Es un modelo a seguir en el cumplimiento de los valores de Farmatodo.", "Brinda reconocimiento individual y grupal, contextualizándolo con el impacto en los resultados de la Organización."]}, "5": {"titulo": "Promueve una visión común", "comportamientos": ["Comunica con claridad los objetivos de la Organización y vincula las actividades del día a día de los colaboradores con estos.", "Transmite en sus discursos y mensajes una energía que moviliza y genera compromiso en quien lo escucha."]}, "6": {"titulo": "Se posiciona como líder", "comportamientos": ["Es un líder reconocido por la madurez emocional con la que asume los compromisos, retos y situaciones complejas.", "Se comunica con otros líderes para asegurar alineación en los mensajes y los resultados esperados."]}}}, "Madurez Emocional": {"def": "Implica tener confianza en sus propias capacidades y/o puntos de vista, asumiendo con seguridad y aplomo diferentes situaciones, retos, cambios y/o nuevas responsabilidades.", "niveles": {"1": {"titulo": "Actúa con autonomía", "comportamientos": ["Toma decisiones propias del nivel de autonomía otorgado a su cargo, sin necesidad de preguntar la opinión de los demás.", "Actúa con seguridad al interactuar con el cliente, proyectando un alto nivel de conocimiento del área."]}, "2": {"titulo": "Demuestra seguridad en sus capacidades", "comportamientos": ["Se posiciona como una persona capaz de sacar adelante lo que se propone.", "Manifiesta seguridad en sus conocimientos y en la forma como expresa sus opiniones y puntos de vista.", "Valora y se apoya en los conocimientos ganados a través de sus experiencias pasadas para tomar decisiones."]}, "3": {"titulo": "Asume retos con seguridad y aplomo", "comportamientos": ["Asume con seguridad los distintos roles que le toca realizar en su trabajo.", "Acepta responsabilidades adicionales, aunque no sean de su pleno dominio, asumiendo el desafío con confianza y control emocional."]}, "4": {"titulo": "Se mantiene calmado y seguro en situaciones de alta presión", "comportamientos": ["Frente a conversaciones difíciles o problemas, autorregula sus emociones (ira, frustración, asombro) y continúa actuando con calma y asertividad.", "Actúa eficientemente pese al estrés de la operación o a una situación de crisis particular.", "Frente a situaciones de alto impacto laboral, demuestra apertura y se muestra calmado, centrándose en la resolución del problema."]}}}, "Orientación a Resultados Excelentes": {"def": "Permanente interés por trabajar bien y alcanzar o sobrepasar los estándares de excelencia establecidos por sí mismo o la Organización.", "niveles": {"1": {"titulo": "Desempeña muy bien su trabajo", "comportamientos": ["Busca métodos o herramientas para realizar su trabajo de forma eficiente.", "Cumple los compromisos que establece con todas las personas con las que interactúa."]}, "2": {"titulo": "Monitorea su desempeño y busca mejorarlo", "comportamientos": ["Hace seguimiento continuo a la evolución de su propio desempeño, midiendo los resultados obtenidos en comparación con los objetivos.", "Busca constantemente retroalimentación sobre su desempeño para incorporar cambios que le permitan alcanzar mejores resultados."]}, "3": {"titulo": "Establece metas retadoras y trabaja para alcanzarlas", "comportamientos": ["Se establece metas profesionales a fin de incrementar sus capacidades.", "Define sus propios objetivos, estableciendo prioridades y estándares con base a lo que debe alcanzar la Organización.", "Hace cambios específicos para mejorar el desempeño de sí mismo, de su área o negocio."]}, "4": {"titulo": "Toma riesgos calculados para hacer crecer el negocio", "comportamientos": ["Realiza comparaciones del desempeño de su área con otras empresas a nivel local o global.", "Teniendo en mente la estrategia de Farmatodo, compromete recursos y tiempo para conseguir mejoras en el rendimiento o alcanzar objetivos difíciles.", "Persigue retos que resulten ser beneficiosos a largo plazo para el negocio.", "Logra mejoras significativas en áreas del negocio con bajo desempeño."]}}}, "Orientación al Cliente": {"def": "Deseo genuino por satisfacer las necesidades de los clientes internos y/o externos. Implica demostrar las conductas de servicio definidas por Farmatodo.", "niveles": {"1": {"titulo": "Responde de manera efectiva al cliente", "comportamientos": ["Interactúa directamente con el cliente interno/externo, de manera educada y amable.", "Responde activamente y con prontitud a las solicitudes efectuadas por los clientes.", "Frente a quejas o solicitudes particulares, brinda respuestas claras y ágiles demostrando las conductas de servicio."]}, "2": {"titulo": "Se compromete personalmente con el cliente", "comportamientos": ["Aclara expectativas con sus clientes, prioriza su trabajo en función de dar el mejor servicio y se compromete con tiempos realistas.", "Cumple lo que le promete al cliente demostrando las conductas de servicio.", "Mantiene una actitud de total disponibilidad con el cliente, especialmente cuando éste pasa por momentos críticos."]}, "3": {"titulo": "Se compromete con perspectiva de largo plazo", "comportamientos": ["Asume los problemas de los clientes como propios y toma acciones más allá de las expectativas de servicio normales.", "Desarrolla una comunicación fluida y constante con los clientes e identifica requerimientos y necesidades de largo plazo.", "Aunque atender a un cliente no sea su responsabilidad directa, es capaz de dar respuesta al cliente."]}, "4": {"titulo": "Promueve la orientación al cliente", "comportamientos": ["Comunica la importancia del cliente como centro del negocio de Farmatodo y vincula las tareas del día a día con el impacto en éste.", "Modela y promueve que el equipo demuestre las conductas asociadas a una excelente atención al cliente.", "Apoya las iniciativas organizacionales que promueven el servicio al cliente aún cuando impliquen movilización de recursos."]}}}, "Pensamiento Integral": {"def": "Capacidad de analizar una situación, proyectos y/o problemas considerando sus causas-raíz, componentes e interrelaciones, así como las posibles soluciones.", "niveles": {"1": {"titulo": "Entiende la situación", "comportamientos": ["Es capaz de descomponer una situación en las partes que la componen.", "Toma acciones para comprender bien una situación antes de actuar, recolectando y organizando información de forma efectiva.", "Es capaz de identificar tendencias y patrones en eventos que lucen aislados o no relacionados."]}, "2": {"titulo": "Considera varias alternativas dentro de su ámbito de acción", "comportamientos": ["Frente a una situación particular, evalúa varias acciones y no se limita a la solución obvia o más fácil.", "Analiza las situaciones y las posibles soluciones considerando las variables únicas de cada país, mercado o proceso."]}, "3": {"titulo": "Analiza con visión integral", "comportamientos": ["Hace simulaciones y escenarios como elemento de evaluación de alternativas de acción para medir los impactos y riesgos de cada opción.", "Anticipa obstáculos y/u oportunidades considerando todas las variables posibles.", "Desarrolla soluciones tomando como referencia experiencias o situaciones similares del pasado.", "Sopesa los aspectos positivos y negativos de la solución a una circunstancia particular."]}, "4": {"titulo": "Articula acciones a partir de un análisis profundo", "comportamientos": ["Propone decisiones y acciones con una visión integral de empresa, habiendo considerado alternativas y factores de viabilidad.", "Anticipa el impacto de tendencias de negocio incipientes o escenarios posibles en el presente y el largo plazo."]}}}, "Preocupación por el Orden y el Detalle": {"def": "Capacidad para reducir al mínimo la posibilidad de errores en torno al desempeño individual o grupal. Se refleja en la continua comprobación y control del trabajo.", "niveles": {"1": {"titulo": "Muestra preocupación por el detalle", "comportamientos": ["Le gusta trabajar con ideas, normas, objetivos y procedimientos claros.", "Es cuidadoso en el manejo de datos y cifras.", "Mantiene un ambiente de orden y limpieza permanente, tanto en su espacio de trabajo como en su imagen personal."]}, "2": {"titulo": "Comprueba su propio trabajo", "comportamientos": ["Recorre el piso de ventas y revisa los detalles y la calidad de su trabajo (cumplimiento del planograma, limpieza, etiquetado).", "Revisa meticulosamente la exactitud de la información que recibe y de su propio trabajo."]}, "3": {"titulo": "Verifica la calidad del trabajo de los demás", "comportamientos": ["Controla la calidad del trabajo de los demás miembros de su equipo, asegurándose que se siguen los procedimientos y se alcanzan los estándares.", "Es metódico y hace seguimiento tanto al trabajo propio como el de los demás."]}, "4": {"titulo": "Sistematiza la verificación del detalle", "comportamientos": ["Establece controles de calidad y lleva registros de errores o fallas en los sistemas o procedimientos.", "Realiza un seguimiento de la información, detecta datos erróneos o ausentes y busca toda la información que le permita mantener el orden.", "Tiene una preocupación general por mejorar el orden de los sistemas establecidos para disminuir el margen de error."]}}}, "Seguimiento y Control": {"def": "Capacidad de hacer seguimiento estrecho y continuo a los detalles administrativos y operativos de la Organización para asegurar su efectiva gestión en los tiempos establecidos.", "niveles": {"1": {"titulo": "Es cuidadoso con los detalles", "comportamientos": ["Muestra atención a los detalles relacionados con la ejecución de las actividades y procesos de acuerdo con los estándares.", "Verifica doblemente la exactitud de la información que brinda a otros, registra y documenta data o eventos."]}, "2": {"titulo": "Hace seguimiento", "comportamientos": ["Comprende el impacto de la no resolución oportuna de los problemas y/o el incumplimiento de los acuerdos para el negocio.", "Desarrolla instrumentos (cuadros/check list de control) propios que le permiten llevar un registro detallado de los problemas."]}, "3": {"titulo": "Verifica la corrección de problemas identificados", "comportamientos": ["Revisa frecuentemente el avance de lo acordado con respecto a sus objetivos y plazos, garantizando el cumplimiento de estándares."]}, "4": {"titulo": "Promueve y comunica la importancia del cumplimiento de estándares", "comportamientos": ["Comunica y exige a su equipo la atención a los detalles, limpieza y orden como elementos críticos del negocio de Farmatodo.", "Promueve y modela conductas de seguimiento y control, se auto-exige y exige a otros el cumplimiento de las normas y procesos."]}}}, "Sensibilidad Interpersonal": {"def": "Capacidad de interpretar y entender los pensamientos, la conducta, sentimientos y preocupaciones de las personas y actuar asertivamente en función de las mismas.", "niveles": {"1": {"titulo": "Reconoce razones y emociones", "comportamientos": ["Muestra interés y dedica tiempo a escuchar y comprender a las personas: sus valores, preocupaciones, expectativas, intereses.", "Es capaz de identificar el estado emocional en la interacción con otras personas interpretando el lenguaje corporal y el tono de voz."]}, "2": {"titulo": "Entiende los significados", "comportamientos": ["Concentra su atención para identificar y entender el estado emocional y el contenido de lo que otras personas expresan.", "Toma las reacciones de la gente como un conjunto inseparable de razonamientos y emociones."]}, "3": {"titulo": "Identifica las razones de las conductas", "comportamientos": ["Entiende las razones por las cuales las personas actúan de una determinada manera, aunque no lo expresen verbalmente.", "Es cuidadoso en hacer juicios de valor sobre los sentimientos de los demás."]}, "4": {"titulo": "Comprende lo que no está a simple vista", "comportamientos": ["Comprende las razones principales que explican los problemas, sentimientos y comportamientos de los demás que perduran en el tiempo.", "Hace un esfuerzo genuino en 'ponerse en los zapatos del otro'.", "Reconoce diferencias entre los individuos y se interrelaciona de acuerdo a estas."]}}}, "Sentido Comercial": {"def": "Capacidad de manejar la Tienda con foco comercial, buscando volumen de ventas, rentabilidad y satisfacción del cliente. Implica entender los aspectos clave del negocio de Farmatodo.", "niveles": {"1": {"titulo": "Comprende los aspectos clave de negocio de su Tienda y Zona", "comportamientos": ["Conoce y entiende las prioridades de la Tienda y cómo éstas apuntan a los objetivos corporativos.", "Durante su gestión, tiene en mente la necesidad de tomar acciones con base en el conocimiento de su Tienda y los negocios competidores.", "Cumple y hace cumplir la programación comercial de la Tienda."]}, "2": {"titulo": "Analiza y comprende el movimiento de sus productos y su impacto para el negocio", "comportamientos": ["Revisa continuamente cuál es el comportamiento de sus productos y categorías, analiza el porqué de las tendencias.", "Analiza la información e identifica tendencias en el movimiento de los productos, proponiendo las acciones necesarias."]}, "3": {"titulo": "Toma acciones para aumentar ventas y rentabilidad", "comportamientos": ["Con base en la información de la operación de su Tienda, toma acciones concretas para potenciar la venta de productos en promociones y ofertas.", "Comunica claramente a su equipo las prioridades comerciales para dirigir sus acciones a lograr las metas propuestas.", "Se preocupa por asegurar que los cabezales estén organizados y exhibe productos que contribuyan a aumentar el ticket promedio."]}, "4": {"titulo": "Propone acciones que tienen alto impacto para Farmatodo", "comportamientos": ["De acuerdo a su conocimiento del negocio, mercado y competencia, propone acciones con potencial a lograr un alto impacto en el negocio de la Organización.", "Cumple la programación de acuerdo a los requerimientos específicos."]}}}, "Sentido de Urgencia": {"def": "Capacidad de actuar, acatar instrucciones y adueñarse de una situación de manera efectiva, rápida y oportuna.", "niveles": {"1": {"titulo": "Actúa rápidamente ante una situación", "comportamientos": ["Actúa rápida, decididamente y/o acata instrucciones para solventar una situación según su autonomía.", "Cuando identifica un problema o hecho fuera de lo normal, informa rápidamente a su supervisor o personas responsables."]}, "2": {"titulo": "Resuelve con efectividad", "comportamientos": ["En su día a día busca diferenciar lo 'importante' de lo 'urgente' para el negocio.", "Es capaz de atender varias situaciones al mismo tiempo y abordarlas efectivamente de manera ágil."]}, "3": {"titulo": "Hace seguimiento a las soluciones propuestas", "comportamientos": ["Después de una situación crítica hace seguimiento hasta la resolución final del problema.", "Insiste, moviliza los recursos necesarios y no se detiene ante obstáculos para asegurar que se solucione el problema de manera efectiva."]}, "4": {"titulo": "Promueve el sentido de urgencia", "comportamientos": ["Promueve un ambiente de trabajo de dinamismo que valora y reconoce la importancia de responder oportunamente para resolver situaciones.", "Formula y ejecuta planes de acción para mejorar la velocidad de respuesta y atención que brinda a otros."]}, "5": {"titulo": "Se prepara para posibles eventualidades", "comportamientos": ["Se anticipa a las situaciones, teniendo planes de contingencia y considerando los distintos indicadores de la empresa y situaciones externas."]}}}, "Vanguardia e Innovación": {"def": "Curiosidad por conocer y comprender la dinámica del sector de negocio de Farmatodo, así como las tendencias globales más relevantes, para proponer acciones que permitan innovar.", "niveles": {"1": {"titulo": "Busca información del sector y mejores prácticas", "comportamientos": ["Muestra curiosidad e investiga para conocer más y estar al día en cuanto a novedades del sector y su área funcional; mejores prácticas, exhibición de productos, experiencia de compra, atención al cliente."]}, "2": {"titulo": "Cuestiona el estado actual de las cosas", "comportamientos": ["Reta los procesos actuales de Farmatodo a la luz del conocimiento que adquiere de sus investigaciones.", "Genera en otros curiosidad por escucharle y motivación para seguir buscando novedades."]}, "3": {"titulo": "Propone y ejecuta innovaciones que agregan valor", "comportamientos": ["Propone novedades de vanguardia o que se han aplicado en otros sectores y que pueden contribuir a generar valor y experiencias de compra diferentes.", "Incentiva a su equipo para que proponga ideas, los escucha y los motiva a seguir generándolas."]}}}, "Visión de Negocio": {"def": "Capacidad de entender los aspectos clave del mercado y negocio, para anticipar y proponer acciones alineadas a la estrategia de Farmatodo.", "niveles": {"1": {"titulo": "Comprende los aspectos clave del negocio y las necesidades del mercado", "comportamientos": ["Analiza y comprende las prioridades y objetivos estratégicos de Farmatodo, así como sus fortalezas y áreas de oportunidad.", "Comprende el entorno en el que se desenvuelve el negocio: político, económico, social, legal, competencia, proveedores."]}, "2": {"titulo": "Alinea su gestión a las prioridades del negocio", "comportamientos": ["Planifica y ejecuta las actividades en función de los aspectos clave del negocio, teniendo en mente la estrategia de Farmatodo.", "Propone y ajusta planes de acción para mantener el alineamiento dentro de su unidad y minimizar riesgos y desviaciones."]}, "3": {"titulo": "Desarrolla iniciativas dentro de su unidad", "comportamientos": ["Basándose en los objetivos estratégicos, propone y establece iniciativas que potencien el crecimiento sostenido de su unidad.", "Identifica oportunidades de negocio y las canaliza con las áreas responsables."]}, "4": {"titulo": "Define estrategias en su área, alineadas a los planes del negocio", "comportamientos": ["Define las estrategias de su área tomando en cuenta los planes en el largo plazo de la Organización.", "Plantea alternativas de acción en su área en línea con las prioridades organizacionales."]}, "5": {"titulo": "Asegura la sostenibilidad del negocio", "comportamientos": ["Promueve oportunidades de mejora en la Organización que incrementen las ventajas competitivas de Farmatodo y su crecimiento rentable.", "Prepara y revisa sistemáticamente planes de contingencia para problemas y situaciones potenciales.", "Propone cambios organizacionales o estrategias que permitan alcanzar el futuro de forma sostenible."]}}}};
+const COMP_NIVELES_ROL = {"ger": {"Capacidad de Integración": 4, "Conciencia de Equipo": 2, "Conocimiento Técnico": 1, "Desarrollo de Otros": 5, "Dirección de Otros": 4, "Energía": 4, "Excelencia Operativa": 4, "Influencia y Negociación": 4, "Liderazgo": 5, "Madurez Emocional": 4, "Orientación a Resultados Excelentes": 4, "Orientación al Cliente": 4, "Pensamiento Integral": 3, "Preocupación por el Orden y el Detalle": 4, "Seguimiento y Control": 4, "Sensibilidad Interpersonal": 4, "Sentido Comercial": 4, "Sentido de Urgencia": 4, "Vanguardia e Innovación": 3, "Visión de Negocio": 4}, "sub": {"Capacidad de Integración": 3, "Conciencia de Equipo": 2, "Conocimiento Técnico": 1, "Desarrollo de Otros": 4, "Dirección de Otros": 3, "Energía": 4, "Excelencia Operativa": 4, "Influencia y Negociación": 3, "Liderazgo": 4, "Madurez Emocional": 4, "Orientación a Resultados Excelentes": 4, "Orientación al Cliente": 4, "Pensamiento Integral": 3, "Preocupación por el Orden y el Detalle": 4, "Seguimiento y Control": 4, "Sensibilidad Interpersonal": 4, "Sentido Comercial": 4, "Sentido de Urgencia": 4, "Vanguardia e Innovación": 2, "Visión de Negocio": 3}};
+
+/* Returns competency section data for a given role */
+function getCompetenciasForRole(r) {
+  var levels = COMP_NIVELES_ROL[r];
+  if (!levels) return null;
+  var result = [];
+  Object.keys(levels).forEach(function(nombre) {
+    var nivel = levels[nombre];
+    var comp = COMPETENCIAS_DB[nombre];
+    if (!comp || !nivel) return;
+    var nivelData = comp.niveles[String(nivel)];
+    if (!nivelData) return;
+    result.push({ nombre: nombre, def: comp.def, nivel: nivel, titulo: nivelData.titulo, comportamientos: nivelData.comportamientos });
+  });
+  return result;
+}
+
 const ROLE_LABELS = { apv:"APV", sub:"Subgerente de Tienda", ger:"Gerente de Tienda" };
 
 function groupByModule(data) {
@@ -764,6 +799,7 @@ tDrop.addEventListener("click", function(e) {
 
 function pickRole(r, btn) {
   pickedRole = r;
+  compResults = {};
   document.querySelectorAll(".role-btn").forEach(function(b) { b.classList.remove("active"); });
   btn.classList.add("active");
   if (cachedDrafts[r] && cachedDrafts[r].meta) prefill(cachedDrafts[r].meta);
@@ -790,7 +826,8 @@ document.getElementById("l-cedula").addEventListener("blur", async function() {
   document.getElementById("l-load").style.display = "block";
   try {
     var results = await Promise.all(["apv","sub","ger"].map(async function(r) {
-      var res  = await fetch(SHEET_URL + "?action=getDraft&cedula=" + encodeURIComponent(cedula) + "&role=" + r);
+      var ctrl2 = new AbortController(); setTimeout(function(){ ctrl2.abort(); }, 4000);
+      var res  = await fetch(SHEET_URL + "?action=getDraft&cedula=" + encodeURIComponent(cedula) + "&role=" + r, { signal: ctrl2.signal });
       var data = await res.json();
       return { r: r, draft: data.draft };
     }));
@@ -830,10 +867,13 @@ async function startEval() {
   var draft = cachedDrafts[pickedRole] || null;
   if (!draft) {
     try {
-      var res  = await fetch(SHEET_URL + "?action=getDraft&cedula=" + encodeURIComponent(cedula) + "&role=" + pickedRole);
+      var ctrl = new AbortController();
+      var tid  = setTimeout(function(){ ctrl.abort(); }, 4000);
+      var res  = await fetch(SHEET_URL + "?action=getDraft&cedula=" + encodeURIComponent(cedula) + "&role=" + pickedRole, { signal: ctrl.signal });
+      clearTimeout(tid);
       var data = await res.json();
       draft = data.draft;
-    } catch(e) {}
+    } catch(e) { /* timeout or network error — continue without draft */ }
   }
   document.getElementById("l-btn").disabled = false;
   document.getElementById("l-load").style.display = "none";
@@ -864,7 +904,7 @@ function buildChecklist(draft) {
   var sumItem = document.createElement("div");
   sumItem.className = "sb-mod-item"; sumItem.id = "sbm-sum";
   sumItem.innerHTML = "<div class=\"sb-dot\" style=\"border-color:var(--teal);color:var(--teal)\">✓</div><div class=\"sb-mod-label\">Resumen</div>";
-  sumItem.onclick = function() { goTo(groups.length); };
+  sumItem.onclick = function() { var hasComp = !!(getCompetenciasForRole(role) && getCompetenciasForRole(role).length > 0); goTo(hasComp ? groups.length + 1 : groups.length); };
   sbMods.appendChild(sumItem);
 
   /* Main content */
@@ -903,6 +943,39 @@ function buildChecklist(draft) {
     main.appendChild(sec);
   });
 
+  /* Competencias section (only for sub/ger) */
+  var compData = getCompetenciasForRole(role);
+  if (compData && compData.length > 0) {
+    /* Sidebar entry */
+    var compSbItem = document.createElement("div");
+    compSbItem.className = "sb-mod-item"; compSbItem.id = "sbm-comp";
+    compSbItem.innerHTML = "<div class=\"sb-dot\" style=\"border-color:#7c3aed;font-size:9px;font-weight:700\">IC</div><div class=\"sb-mod-label\">Inventario Competencias</div>";
+    compSbItem.onclick = function() { goTo(groups.length); };
+    sbMods.insertBefore(compSbItem, sumItem);
+
+    /* Competencias block */
+    var compSec = document.createElement("div");
+    compSec.className = "block-section"; compSec.id = "sec-comp";
+    var compHtml = "<div class=\"block-hd\"><div class=\"block-hd-title\">Inventario de Competencias</div><div class=\"block-hd-count\">" + compData.length + " competencia(s)</div></div>";
+    compHtml += "<div style=\"padding:8px 16px 4px;font-size:12px;color:var(--sub);line-height:1.6\">Evalúa los comportamientos esperados para el nivel requerido en este cargo. Las competencias marcadas como <strong>No Consolidado</strong> impiden la certificación.</div>";
+    compData.forEach(function(c, ci) {
+      compHtml += "<div class=\"comp-card\">";
+      compHtml += "<div class=\"comp-card-name\">" + c.nombre + "</div>";
+      compHtml += "<div class=\"comp-card-nivel\">Nivel " + c.nivel + " · " + c.titulo + "</div>";
+      compHtml += "<div class=\"comp-card-def\">" + c.def + "</div>";
+      compHtml += "<div class=\"comp-nivel-titulo\">Comportamientos esperados:</div>";
+      c.comportamientos.forEach(function(b) {
+        compHtml += "<div class=\"comp-comportamiento\">" + b + "</div>";
+      });
+      compHtml += "<div class=\"comp-resultado-row\">";
+      compHtml += "<button class=\"comp-btn\" id=\"cb-cons-" + ci + "\" onclick=\"setComp(" + ci + ",'consolidado')\">✓ Consolidado</button>";
+      compHtml += "<button class=\"comp-btn\" id=\"cb-nocons-" + ci + "\" onclick=\"setComp(" + ci + ",'no-consolidado')\">✗ No Consolidado</button>";
+      compHtml += "</div></div>";
+    });
+    compSec.innerHTML = compHtml;
+    main.appendChild(compSec);
+  }
+
   /* Summary section */
   var sumSec = document.createElement("div");
   sumSec.className = "block-section"; sumSec.id = "sec-sum";
@@ -926,6 +999,13 @@ function buildChecklist(draft) {
       if (date && row.fecha)     { date.value = row.fecha; }
       if (obs  && row.obs)       { obs.value  = row.obs; }
     });
+    /* Restore comp results */
+    if (draft.comp && draft.comp[role]) {
+      compResults = draft.comp[role];
+      Object.keys(compResults).forEach(function(ci) {
+        setComp(parseInt(ci), compResults[ci]);
+      });
+    }
     showToast("Avance cargado ✓");
   }
 
@@ -935,6 +1015,21 @@ function buildChecklist(draft) {
 }
 
 function onSel(sel) { applySelStyle(sel); updateProgress(); triggerAutoSave(); }
+
+/* COMPETENCIAS */
+var compResults = {};  /* { 0: 'consolidado', 1: 'no-consolidado', ... } */
+function setComp(ci, valor) {
+  compResults[ci] = valor;
+  var btnCons   = document.getElementById("cb-cons-" + ci);
+  var btnNoCons = document.getElementById("cb-nocons-" + ci);
+  if (btnCons && btnNoCons) {
+    btnCons.className   = "comp-btn" + (valor === "consolidado"    ? " consolidado"    : "");
+    btnNoCons.className = "comp-btn" + (valor === "no-consolidado" ? " no-consolidado" : "");
+  }
+  triggerAutoSave();
+}
+function getCompResult(ci) { return compResults[ci] || ""; }
+
 function applySelStyle(sel) {
   sel.className = "proc-sel" + (sel.value === "cumple" ? " cumple" : sel.value === "no-cumple" ? " no-cumple" : sel.value === "parcial" ? " parcial" : "");
 }
@@ -964,21 +1059,32 @@ function updateProgress() {
 function renderSec(idx) {
   document.querySelectorAll(".block-section").forEach(function(s) { s.classList.remove("active"); });
   document.querySelectorAll(".sb-mod-item").forEach(function(s) { s.classList.remove("active"); });
-  var isSum = idx >= groups.length;
-  var secEl = document.getElementById(isSum ? "sec-sum" : "sec-" + idx);
-  var sbEl  = document.getElementById(isSum ? "sbm-sum" : "sbm-" + idx);
+  var hasComp = !!(getCompetenciasForRole(role) && getCompetenciasForRole(role).length > 0);
+  var compIdx = groups.length;       /* comp section index */
+  var sumIdx  = hasComp ? groups.length + 1 : groups.length; /* summary index */
+  var isComp  = hasComp && idx === compIdx;
+  var isSum   = idx >= sumIdx;
+  var secEl, sbEl;
+  if (isSum)        { secEl = document.getElementById("sec-sum"); sbEl = document.getElementById("sbm-sum"); }
+  else if (isComp)  { secEl = document.getElementById("sec-comp"); sbEl = document.getElementById("sbm-comp"); }
+  else              { secEl = document.getElementById("sec-" + idx); sbEl = document.getElementById("sbm-" + idx); }
   if (secEl) secEl.classList.add("active");
   if (sbEl)  sbEl.classList.add("active");
   if (isSum) renderSummary();
   var btn = document.getElementById("btn-next");
-  if (isSum) { btn.textContent = "✓ Finalizar evaluación"; btn.className = "btn-finish"; }
-  else { btn.textContent = idx === groups.length - 1 ? "Ver resumen →" : "Continuar →"; btn.className = "btn-next"; }
+  if (isSum)        { btn.textContent = "✓ Finalizar evaluación"; btn.className = "btn-finish"; }
+  else if (isComp)  { btn.textContent = "Ver resumen →"; btn.className = "btn-next"; }
+  else { btn.textContent = idx === groups.length - 1 ? (hasComp ? "Competencias →" : "Ver resumen →") : "Continuar →"; btn.className = "btn-next"; }
   curSec = idx;
   window.scrollTo(0, 0);
 }
 
 function goTo(idx) { renderSec(idx); }
-function handleNext() { if (curSec >= groups.length) { confirmFinish(); } else { renderSec(curSec + 1); } }
+function handleNext() {
+  var hasComp = !!(getCompetenciasForRole(role) && getCompetenciasForRole(role).length > 0);
+  var sumIdx = hasComp ? groups.length + 1 : groups.length;
+  if (curSec >= sumIdx) { confirmFinish(); } else { renderSec(curSec + 1); }
+}
 
 /* SUMMARY */
 function renderSummary() {
@@ -1034,12 +1140,34 @@ function renderSummary() {
         "<tbody>" + tableRows + "</tbody>" +
       "</table>" +
     "</div>" +
+    (function() {
+      var compD = getCompetenciasForRole(role);
+      if (!compD || !compD.length) return "";
+      var compRows = "";
+      compD.forEach(function(c, ci) {
+        var res = compResults[ci] || "";
+        var resHtml = res === "consolidado"
+          ? "<span class=\"res-cumple\">✓ Consolidado</span>"
+          : res === "no-consolidado"
+            ? "<span class=\"res-nocumple\">✗ No Consolidado</span>"
+            : "<span class=\"res-empty\">—</span>";
+        compRows += "<tr><td style=\"font-size:11px;font-weight:700;color:var(--sub)\">" + c.nombre + "</td>" +
+          "<td style=\"font-size:11px;color:#4b5563\">" + c.titulo + "</td>" +
+          "<td>" + resHtml + "</td></tr>";
+      });
+      return "<div style=\"margin-bottom:14px\">" +
+        "<div style=\"font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--sub);padding:8px 0 6px\">Inventario de Competencias</div>" +
+        "<table class=\"proc-list-table\">" +
+          "<thead><tr><th>Competencia</th><th>Nivel Requerido</th><th>Evaluación</th></tr></thead>" +
+          "<tbody>" + compRows + "</tbody>" +
+        "</table></div>";
+    })() +
     "</div>";
 }
 
 /* SAVE */
 function collectSnap() {
-  var snap = { meta: ST, rows: {} };
+  var snap = { meta: ST, rows: {}, comp: {} };
   snap.rows[role] = ROLES[role].map(function(_, i) {
     return {
       resultado: (document.getElementById("sel-"  + i) || {}).value || "",
@@ -1047,10 +1175,11 @@ function collectSnap() {
       obs:       (document.getElementById("obs-"  + i) || {}).value || ""
     };
   });
+  snap.comp[role] = compResults;
   return snap;
 }
 
-async var _autoSaveTimer = null;
+var _autoSaveTimer = null;
 function saveProgress() {
   var statusEl = document.getElementById("autosave-status");
   if (statusEl) { statusEl.textContent = "Guardando…"; }
@@ -1084,8 +1213,27 @@ function confirmFinish() {
     if (!s || !s.value) missing.push(i + 1);
   }
   if (missing.length) {
-    alert("Faltan " + missing.length + " proceso(s) sin resultado.\nCompleta todos los campos de Cumple/No cumple antes de finalizar.");
+    alert("Faltan " + missing.length + " proceso(s) sin resultado.\nCompleta todos los campos antes de finalizar.");
     return;
+  }
+  /* Check competencias if role has them */
+  var compData = getCompetenciasForRole(role);
+  if (compData && compData.length > 0) {
+    var missingComp = [];
+    var noConsolidado = [];
+    compData.forEach(function(c, ci) {
+      var res = compResults[ci];
+      if (!res) { missingComp.push(c.nombre); }
+      else if (res === "no-consolidado") { noConsolidado.push(c.nombre); }
+    });
+    if (missingComp.length > 0) {
+      alert("Faltan " + missingComp.length + " competencia(s) sin evaluar:\n• " + missingComp.join("\n• "));
+      return;
+    }
+    if (noConsolidado.length > 0) {
+      alert("No es posible certificar. Las siguientes competencias están como No Consolidado:\n\n• " + noConsolidado.join("\n• ") + "\n\nEl colaborador no certifica en este cargo.");
+      return;
+    }
   }
   if (!confirm("¿Finalizar y registrar la evaluación de " + ST.nombre + "?")) return;
   finishEval();
