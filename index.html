@@ -164,7 +164,8 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--i
 @media print{
   .top-bar,.action-bar,.cl-sidebar,.prog-bar-wrap{display:none!important}
   body{background:white;font-size:11px}
-  .cl-main{padding-bottom:0}
+  .cl-main{padding-bottom:0;margin-left:0!important}
+  .block-section.active{max-width:none!important;margin:0!important}
   /* Hide all process blocks - only show summary */
   .block-section{display:none!important}
   #sec-sum{display:block!important}
@@ -175,6 +176,14 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--i
   .print-header{display:block!important}
   .block-hd{position:static}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sum-card{padding:10px 14px;margin-bottom:8px}
+  .sum-row{padding:4px 0;font-size:11.5px}
+  .proc-list-table{font-size:10px;margin-top:6px}
+  .proc-list-table th{padding:5px 8px}
+  .proc-list-table td{padding:4px 8px}
+  .print-header{padding:10px 16px 12px;margin-bottom:0}
+  .print-logo{height:26px;margin-bottom:6px}
+  .print-meta{font-size:10px;line-height:1.5}
 }
 /* Print header - hidden on screen */
 .print-header{display:none;padding:20px 22px;border-bottom:1px solid var(--border);margin-bottom:4px}
@@ -705,7 +714,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--i
         <label class="chk-row"><input type="checkbox" id="chk-colab" checked><span>Colaborador: <strong id="lbl-colab"></strong></span></label>
         <label class="chk-row"><input type="checkbox" id="chk-tutor" checked><span>Tutor: <strong id="lbl-tutor"></strong></span></label>
         <div class="email-hint">El correo incluirá el listado completo de procesos con resultado, fecha y observaciones, más el resumen final.</div>
-        <button class="btn-email" id="btn-email" onclick="sendEmails()">📧 Enviar por correo</button>
+        <button class="btn-email" id="btn-email" onclick="sendEmails()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:7px"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>Enviar por correo</button>
         <div class="email-status" id="email-status"></div>
       </div>
       <div class="confirm-btns">
@@ -1396,7 +1405,8 @@ function confirmFinish() {
       return;
     }
   }
-  if (!confirm("¿Finalizar y registrar la evaluación de " + ST.nombre + "?")) return;
+  var finishBtn = document.getElementById("btn-next");
+  if (finishBtn) { finishBtn.disabled = true; finishBtn.textContent = "Guardando…"; }
   finishEval();
 }
 async function finishEval() {
@@ -1428,7 +1438,7 @@ async function finishEval() {
   var chkC = document.getElementById("chk-colab"); chkC.disabled = !ST.emailColab; chkC.checked = !!ST.emailColab;
   var chkT = document.getElementById("chk-tutor"); chkT.disabled = !ST.emailTutor; chkT.checked = !!ST.emailTutor;
   document.getElementById("email-status").textContent = "";
-  document.getElementById("btn-email").textContent = "📧 Enviar por correo";
+  document.getElementById("btn-email").innerHTML = "<svg width=\"15\" height=\"15\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" style=\"vertical-align:-3px;margin-right:7px\"><rect x=\"2\" y=\"4\" width=\"20\" height=\"16\" rx=\"2\"/><path d=\"m22 7-10 6L2 7\"/></svg>Enviar por correo";
   document.getElementById("btn-email").disabled = false;
   showScreen("s-confirm");
 }
@@ -1460,21 +1470,22 @@ async function sendEmails() {
     rows: rows
   };
   try {
-    // Use no-cors since Apps Script doesn't return CORS headers
-    // We assume success if no network error occurs
-    await fetch(SHEET_URL, {
+    var res = await fetch(SHEET_URL, {
       method:"POST",
-      mode:"no-cors",
-      headers:{"Content-Type":"application/json"},
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
       body: JSON.stringify(payload)
     });
-    // no-cors returns opaque response - if we got here without throwing, request was sent
-    setEmailSt("✓ Correo enviado correctamente", "ok");
-    btn.textContent = "✓ Enviado";
+    var out = await res.json();
+    if (out && out.status === "ok") {
+      setEmailSt("✓ Correo enviado correctamente", "ok");
+      btn.textContent = "✓ Enviado";
+    } else {
+      setEmailSt("No se pudo enviar: " + (out && out.error ? out.error : "error desconocido en el servidor."), "err");
+      btn.disabled = false; btn.textContent = "Reintentar envío";
+    }
   } catch(e) {
-    // Only actual network errors land here
     setEmailSt("Error de red: " + e.message, "err");
-    btn.disabled = false; btn.textContent = "📧 Reintentar";
+    btn.disabled = false; btn.textContent = "Reintentar envío";
   }
 }
 function setEmailSt(msg, type) {
@@ -1487,8 +1498,11 @@ function downloadChecklist() {
   renderSummary();
   document.querySelectorAll(".block-section").forEach(function(s) { s.classList.add("active"); });
   showScreen("s-checklist");
+  var prevTitle = document.title;
+  document.title = "Certificación CIMA - " + ROLE_LABELS[role] + "- " + ST.cedula + " " + ST.nombre;
   setTimeout(function() {
     window.print();
+    document.title = prevTitle;
     setTimeout(function() {
       renderSec(curSec);
       showScreen("s-confirm");
