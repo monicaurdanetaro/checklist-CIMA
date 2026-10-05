@@ -988,7 +988,7 @@ async function portalLogin() {
   btn.disabled = true; btn.textContent = "Validando…";
   try {
     var ctrl = new AbortController();
-    var tid  = setTimeout(function() { ctrl.abort(); }, 8000);
+    var tid  = setTimeout(function() { ctrl.abort(); }, 25000);
     var res  = await fetch(SHEET_URL + "?action=auth&correo=" + encodeURIComponent(correo) + "&cedula=" + encodeURIComponent(cedula) + "&rol=" + portalRole, { signal: ctrl.signal });
     clearTimeout(tid);
     var data = await res.json();
@@ -1001,7 +1001,9 @@ async function portalLogin() {
     btn.disabled = false; btn.textContent = "Ingresar";
     if (portalRole === "tutor") { enterTutorFlow(); } else { enterRRHH(); }
   } catch(e) {
-    errEl.textContent = "Error de conexión. Intenta de nuevo.";
+    errEl.textContent = (e && e.name === "AbortError")
+      ? "El servidor tardó demasiado en responder. Intenta de nuevo."
+      : "No se pudo validar el acceso (respuesta inválida del servidor). Intenta de nuevo.";
     btn.disabled = false; btn.textContent = "Ingresar";
   }
 }
@@ -1038,7 +1040,7 @@ document.getElementById("l-cedula").addEventListener("blur", async function() {
   document.getElementById("l-load").style.display = "block";
   try {
     var results = await Promise.all(["apv","sub","ger"].map(async function(r) {
-      var ctrl2 = new AbortController(); setTimeout(function(){ ctrl2.abort(); }, 4000);
+      var ctrl2 = new AbortController(); setTimeout(function(){ ctrl2.abort(); }, 15000);
       var res  = await fetch(SHEET_URL + "?action=getDraft&cedula=" + encodeURIComponent(cedula) + "&role=" + r, { signal: ctrl2.signal });
       var data = await res.json();
       return { r: r, draft: data.draft };
@@ -1080,7 +1082,7 @@ async function startEval() {
   if (!draft) {
     try {
       var ctrl = new AbortController();
-      var tid  = setTimeout(function(){ ctrl.abort(); }, 4000);
+      var tid  = setTimeout(function(){ ctrl.abort(); }, 15000);
       var res  = await fetch(SHEET_URL + "?action=getDraft&cedula=" + encodeURIComponent(cedula) + "&role=" + pickedRole, { signal: ctrl.signal });
       clearTimeout(tid);
       var data = await res.json();
@@ -1482,7 +1484,7 @@ async function finishEval() {
     await fetch(SHEET_URL, {
       method:"POST", mode:"no-cors",
       headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({ action:"finalize", cedula:ST.cedula, role:role, data:snap, compDetail:compDetail, compObs:compObsForSend })
+      body: JSON.stringify({ action:"finalize", cedula:ST.cedula, role:role, data:snap, compDetail:compDetail, compObs:compObsForSend, procDetail: ROLES[role].map(function(it){ return { modulo: it[0], proceso: it[1] }; }) })
     });
   } catch(e) {}
   document.getElementById("conf-detail").innerHTML =
@@ -1613,6 +1615,7 @@ function rrhhStatus(row) {
   /* row.pct: 0-100 or null/undefined if not started. row.completo: bool (todos los procesos con resultado) */
   if (row.pct === null || row.pct === undefined) return { key: "progress", label: "Sin iniciar" };
   if (!row.completo) return { key: "progress", label: "En progreso" };
+  if (typeof row.certifica === "boolean") return row.certifica ? { key: "ok", label: "Certificado" } : { key: "fail", label: "No certificado" };
   return row.pct >= CONFIG.pctAprobacion ? { key: "ok", label: "Certificado" } : { key: "fail", label: "No certificado" };
 }
 function rrhhRenderKpis() {
@@ -1638,7 +1641,7 @@ function rrhhRenderTable() {
     if (fCargo && r.role !== fCargo) return false;
     var st = rrhhStatus(r).key;
     if (fEstado && st !== fEstado) return false;
-    if (q && !((r.nombre || "").toLowerCase().indexOf(q) > -1 || (r.cedula || "").toLowerCase().indexOf(q) > -1)) return false;
+    if (q && !((r.nombre || "").toLowerCase().indexOf(q) > -1 || String(r.cedula || "").toLowerCase().indexOf(q) > -1)) return false;
     return true;
   });
   var container = document.getElementById("rrhh-table-container");
